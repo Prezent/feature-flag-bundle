@@ -1,7 +1,7 @@
 {
   "name": "prezent/feature-flag-bundle",
   "type": "symfony-bundle",
-  "description": "Integrates Feature Flags into you Symfony2 project",
+  "description": "Integrates Feature Flags into you Symfony project",
   "keywords": ["featureflag", "feature"],
   "homepage": "http://www.prezent.nl",
   "require": {
