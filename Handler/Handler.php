@@ -28,11 +28,12 @@ abstract class Handler implements HandlerInterface
      */
     public function isActivated($featureName)
     {
-        if (!isset($this->permissions[$featureName])) {
+        $key = strtolower($featureName);
+        if (!isset($this->permissions[$key])) {
             return $this->getDefaultPermission();
         }
 
-        return $this->permissions[$featureName];
+        return $this->permissions[$key];
     }
 
     /**

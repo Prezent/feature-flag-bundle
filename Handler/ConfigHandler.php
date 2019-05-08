@@ -27,8 +27,8 @@ class ConfigHandler extends Handler
      */
     public function initialize()
     {
-        foreach ($this->features as $featureName => $featureValues) {
-            $this->permissions[$featureName] = $featureValues;
+        foreach ($this->features as $featureName => $featureValue) {
+            $this->permissions[strtolower($featureName)] = $featureValue;
         }
 
         return true;

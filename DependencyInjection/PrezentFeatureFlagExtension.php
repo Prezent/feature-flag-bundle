@@ -29,9 +29,14 @@ class PrezentFeatureFlagExtension extends Extension
         // overwrite the parameters
         $container->setParameter('prezent_feature_flag.default_permission', $config['default_permission']);
 
-        if ($container->hasParameter('feature_flags')) {
-            $container->setParameter('prezent_feature_flag.features', $container->getParameter('feature_flags'));
+        // set the feature flags
+        $featureFlags = [];
+        foreach ($container->getParameterBag()->all() as $key => $value) {
+            if (false !== strstr($key, 'ff_')) {
+                $featureFlags[substr($key, 3)] = $value;
+            }
         }
+        $container->setParameter('prezent_feature_flag.features', $featureFlags);
 
         // set the alias for the handler we are going to use
         $container->setAlias('prezent_feature_flag.handler', $config['handler']);
