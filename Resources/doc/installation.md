@@ -20,3 +20,13 @@ public function registerBundles()
     );
 }
 ```
+
+# Configuration
+
+## Via config
+If you define your featureflag in a config file, prefix the name of the flags with ```ff_```
+
+```yml
+parameters:
+    ff_myfeature: true
+```
