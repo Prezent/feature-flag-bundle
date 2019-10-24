@@ -3,12 +3,12 @@
   "type": "symfony-bundle",
   "description": "Integrates Feature Flags into you Symfony project",
   "keywords": ["featureflag", "feature"],
-  "homepage": "http://www.prezent.nl",
+  "homepage": "https://www.prezent.nl",
   "require": {
-    "doctrine/annotations": "~1.2",
+    "doctrine/annotations": "^1.2",
     "php": ">=5.5.9",
-    "symfony/framework-bundle": "~2.3",
-    "symfony/twig-bundle": "~2.3"
+    "symfony/framework-bundle": "^3.4||^4.3",
+    "symfony/twig-bundle": "^3.4||^4.3"
   },
   "suggest": {
     "doctrine/doctrine-migrations-bundle": "To automatically create a feature flag table using a migrations file",
