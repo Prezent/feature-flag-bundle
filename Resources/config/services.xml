@@ -12,6 +12,8 @@
     </parameters>
 
     <services>
+        <!-- Alias the interface to the concrete implementation -->
+        <service id="Prezent\FeatureFlagBundle\Handler\HandlerInterface" alias="prezent_feature_flag.handler"/>
 
         <service id="prezent_feature_flag.handler_config" class="%prezent_feature_flag.handler_config.class%">
             <argument>%prezent_feature_flag.features%</argument>
