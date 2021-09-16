@@ -57,4 +57,12 @@ abstract class Handler implements HandlerInterface
         $this->defaultPermission = $defaultPermission;
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
 }
