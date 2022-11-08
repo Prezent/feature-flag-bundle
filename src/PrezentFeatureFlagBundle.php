@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class PrezentFeatureFlagBundle extends Bundle
+final class PrezentFeatureFlagBundle extends Bundle
 {
 }

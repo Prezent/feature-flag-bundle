@@ -12,6 +12,11 @@
     </parameters>
 
     <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <!-- Service prototypes -->
+        <prototype namespace="Prezent\FeatureFlagBundle\" resource="../../*" exclude="../../{Entity,Repository,Resources}"/>
+
         <!-- Alias the interface to the concrete implementation -->
         <service id="Prezent\FeatureFlagBundle\Handler\HandlerInterface" alias="prezent_feature_flag.handler"/>
 
@@ -31,15 +36,12 @@
             <call method="initialize" />
         </service>
 
-        <service id="prezent_feature_flag.twig.feature_flag_extension" class="Prezent\FeatureFlagBundle\Twig\FeatureFlagExtension" public="false">
-            <argument type="service" id="prezent_feature_flag.handler" />
+        <service id="Prezent\FeatureFlagBundle\Twig\FeatureFlagExtension">
             <tag name="twig.extension" />
         </service>
 
-        <service id="prezent_feature_flag.annotation_driver" class="Prezent\FeatureFlagBundle\Annotations\Driver\AnnotationDriver">
+        <service id="Prezent\FeatureFlagBundle\Annotations\Driver\AnnotationDriver">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
-            <argument type="service" id="annotation_reader" />
-            <argument type="service" id="prezent_feature_flag.handler" />
         </service>
 
     </services>

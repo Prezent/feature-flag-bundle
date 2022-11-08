@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Prezent\FeatureFlagBundle\Entity\FeatureFlag;
 
 /**
  * Prezent\FeatureFlagBundle\Repository\FeatureFlagRepository
@@ -14,10 +17,9 @@ class FeatureFlagRepository extends EntityRepository
     /**
      * Get all feature flags, use resultcache if prompted
      *
-     * @param bool|true $useResultCache
-     * @return array
+     * @return array<FeatureFlag>
      */
-    public function getAll($useResultCache = true)
+    public function getAll(bool $useResultCache = true): array
     {
         $query = $this->createQueryBuilder('f')
             ->getQuery();

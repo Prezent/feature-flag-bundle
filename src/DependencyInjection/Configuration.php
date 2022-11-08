@@ -1,23 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * This is the class that validates and merges configuration from your app/config files
- */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('prezent_feature_flag');
+        $treeBuilder = new TreeBuilder('prezent_feature_flag');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $treeBuilder->root('prezent_feature_flag');
+        }
 
         $rootNode
             ->children()
@@ -35,14 +39,19 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Create the node for all the feartures
-     * @return NodeDefinition
+     * Create the node for all the features
      */
-    private function createFeaturesNode()
+    private function createFeaturesNode(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('features');
-        $node
+        $treeBuilder = new TreeBuilder('features');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $treeBuilder->root('features');
+        }
+
+        $rootNode
             ->prototype('array')
                 ->treatTrueLike(['enabled' => true])
                 ->treatFalseLike(['enabled' => false])
@@ -66,6 +75,6 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        return $node;
+        return $rootNode;
     }
 }

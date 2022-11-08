@@ -1,25 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\Annotations;
 
 /**
- *
- * Prezent\FeatureFlagBundle\Annotations\FeatureFlag
- *
  * @Annotation
  * @author Robert-Jan Bijl <robert-jan@prezent.nl>
  */
-class FeatureFlag
+final class FeatureFlag
 {
-    /**
-     * @var string
-     */
-    private $feature;
+    private string $feature;
 
     /**
-     * Constructor
-     *
-     * @param $feature
+     * @param string|array<string> $feature
      */
     public function __construct($feature)
     {
@@ -35,20 +29,18 @@ class FeatureFlag
      *
      * @return string
      */
-    public function getFeature()
+    public function getFeature(): string
     {
         return $this->feature;
     }
 
     /**
      * Setter for feature
-     *
-     * @param string $feature
-     * @return self
      */
-    public function setFeature($feature)
+    public function setFeature(string $feature): self
     {
         $this->feature = $feature;
+
         return $this;
     }
 }

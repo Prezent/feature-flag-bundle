@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\Annotations\Driver;
 
 use Doctrine\Common\Annotations\Reader;
@@ -15,15 +17,9 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class AnnotationDriver
 {
-    /**
-     * @var Reader
-     */
-    private $reader;
+    private Reader $reader;
 
-    /**
-     * @var HandlerInterface
-     */
-    private $featureFlagHandler;
+    private HandlerInterface $featureFlagHandler;
 
     /**
      * Constructor
@@ -39,9 +35,8 @@ class AnnotationDriver
 
     /**
      * This event will fire during any controller call
-     * @param FilterControllerEvent $event
      */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(FilterControllerEvent $event): void
     {
         // return if there is no controller for this event
         if (!is_array($controller = $event->getController())) {
@@ -71,7 +66,7 @@ class AnnotationDriver
      * @param $annotation
      * @return bool
      */
-    private function checkAnnotation($annotation)
+    private function checkAnnotation($annotation): bool
     {
         // check if one of the annotations is about feature flags
         if ($annotation instanceof Annotations\FeatureFlag) {
