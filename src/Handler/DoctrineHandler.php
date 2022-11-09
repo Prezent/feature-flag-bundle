@@ -29,4 +29,22 @@ class DoctrineHandler extends Handler
             $this->permissions[$featureFlag->getFeature()] = $featureFlag->isEnabled();
         }
     }
+
+    public function addFeature(string $feature, ?bool $permisson = null): bool
+    {
+        $permisson = $permisson ?? $this->getDefaultPermission();
+        if ($this->featureExists($feature)) {
+            throw new \RuntimeException(sprintf('Feature %s already exisis', $feature));
+        }
+                
+        try {
+            $featureFlag = new FeatureFlag($feature, $permisson);
+            $this->em->persist($featureFlag);
+            $this->em->flush($featureFlag);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

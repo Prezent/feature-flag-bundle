@@ -34,6 +34,14 @@ class FeatureFlag
      */
     private $enabled;
 
+    public function __construct(string $feature, ?bool $enabled = null)
+    {
+        $this->feature = $feature;
+        if (!is_null($enabled)) {
+            $this->enabled = $enabled;
+        }
+    }
+
     /**
      * Getter for id
      *
