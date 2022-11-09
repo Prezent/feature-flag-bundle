@@ -28,7 +28,7 @@ abstract class Handler implements HandlerInterface
     {
         $feature = strtolower($feature);
         foreach ($this->permissions as $key => $permission) {
-            if (strtolower($feature) === $key) {
+            if ($feature === strtolower($key)) {
                 return $permission;
             }
         }
@@ -36,11 +36,14 @@ abstract class Handler implements HandlerInterface
         return $this->getDefaultPermission();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function featureExists(string $feature): bool
     {
         $feature = strtolower($feature);
         foreach ($this->permissions as $key => $permission) {
-            if (strtolower($feature) === $key) {
+            if ($feature === strtolower($key)) {
                 return true;
             }
         }
