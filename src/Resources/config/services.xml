@@ -5,8 +5,6 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="prezent_feature_flag.handler_doctrine.class">Prezent\FeatureFlagBundle\Handler\DoctrineHandler</parameter>
-        <parameter key="prezent_feature_flag.handler_config.class">Prezent\FeatureFlagBundle\Handler\ConfigHandler</parameter>
         <parameter key="prezent_feature_flag.default_permission">false</parameter>
         <parameter key="prezent_feature_flag.features" type="collection"></parameter>
     </parameters>
@@ -20,7 +18,7 @@
         <!-- Alias the interface to the concrete implementation -->
         <service id="Prezent\FeatureFlagBundle\Handler\HandlerInterface" alias="prezent_feature_flag.handler"/>
 
-        <service id="prezent_feature_flag.handler_config" class="%prezent_feature_flag.handler_config.class%">
+        <service id="Prezent\FeatureFlagBundle\Handler\ConfigHandler">
             <argument>%prezent_feature_flag.features%</argument>
             <call method="setDefaultPermission">
                 <argument>%prezent_feature_flag.default_permission%</argument>
@@ -28,7 +26,7 @@
             <call method="initialize" />
         </service>
 
-        <service id="prezent_feature_flag.handler_doctrine" class="%prezent_feature_flag.handler_doctrine.class%">
+        <service id="Prezent\FeatureFlagBundle\Handler\DoctrineHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%kernel.cache_dir%</argument>
             <call method="setDefaultPermission">

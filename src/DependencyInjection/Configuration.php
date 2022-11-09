@@ -29,7 +29,7 @@ final class Configuration implements ConfigurationInterface
                     ->defaultFalse()
                 ->end()
                 ->scalarNode('handler')
-                    ->defaultValue('prezent_feature_flag.handler_config')
+                    ->defaultValue('Prezent\FeatureFlagBundle\Handler\ConfigHandler')
                 ->end()
             ->end()
             ->append($this->createFeaturesNode())
