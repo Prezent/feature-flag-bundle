@@ -6,7 +6,19 @@ This bundle can be installed using Composer. Tell composer to install the extens
 $ php composer.phar require prezent/feature-flag-bundle
 ```
 
-Then, activate the bundle in your kernel:
+Then, activate the bundle (Symfony 4+):
+
+```php
+<?php
+// config/bundles.php
+
+return [
+    // ...
+    Prezent\FeatureFlagBundle\PrezentFeatureFlagBundle::class => ['all' => true],
+];
+```
+
+or (Symfony 3):
 
 ```php
 <?php
@@ -14,19 +26,31 @@ Then, activate the bundle in your kernel:
 
 public function registerBundles()
 {
-    $bundles = array(
+    $bundles = [
         // ...
-        new Prezent\GridBundle\PrezentFeatureFlagBundle(),
-    );
+        new Prezent\FeatureFlagBundle\PrezentFeatureFlagBundle(),
+    ];
 }
 ```
 
 # Configuration
 
+## Full example
+```yml
+prezent_feature_flag:
+    default_permission: false #default value for an undefinded permission
+    handler: Prezent\FeatureFlagBundle\Handler\ConfigHandler # the handler to use
+```
+
+# Defining Feature Flags
+
 ## Via config
-If you define your featureflag in a config file, prefix the name of the flags with ```ff_```
+If you define your feature flags in a config file, prefix the name of the flags with ```ff_```
 
 ```yml
 parameters:
     ff_myfeature: true
 ```
+
+## Via Doctrine
+Define your feature flags in the database, using the provider entity and migration
