@@ -30,6 +30,7 @@
 
         <service id="prezent_feature_flag.handler_doctrine" class="%prezent_feature_flag.handler_doctrine.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%kernel.cache_dir%</argument>
             <call method="setDefaultPermission">
                 <argument>%prezent_feature_flag.default_permission%</argument>
             </call>

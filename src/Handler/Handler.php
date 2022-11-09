@@ -1,67 +1,83 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\Handler;
 
 /**
- * Prezent\FeatureFlagBundle\Handler\Handler
- *
  * @author Robert-Jan Bijl <robert-jan@prezent.nl>
  */
 abstract class Handler implements HandlerInterface
 {
     /**
      * The default permission, i.e. what to return if the feature is not defined
-     *
-     * @var bool
      */
-    protected $defaultPermission;
+    protected bool $defaultPermission;
 
     /**
      * The computed permissions
      *
-     * @var array
+     * @var array<string, bool>
      */
-    protected $permissions = [];
+    protected array $permissions = [];
 
     /**
      * {@inheritDoc}
      */
-    public function isActivated($featureName)
+    public function isActivated(string $feature): bool
     {
-        $key = strtolower($featureName);
-        if (!isset($this->permissions[$key])) {
-            return $this->getDefaultPermission();
+        $feature = strtolower($feature);
+        foreach ($this->permissions as $key => $permission) {
+            if (strtolower($feature) === $key) {
+                return $permission;
+            }
         }
 
-        return $this->permissions[$key];
+        return $this->getDefaultPermission();
+    }
+
+    public function featureExists(string $feature): bool
+    {
+        $feature = strtolower($feature);
+        foreach ($this->permissions as $key => $permission) {
+            if (strtolower($feature) === $key) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Getter for defaultPermission
-     *
-     * @return boolean
      */
-    public function getDefaultPermission()
+    public function getDefaultPermission(): bool
     {
         return $this->defaultPermission;
     }
 
     /**
      * Setter for defaultPermission
-     *
-     * @param boolean $defaultPermission
-     * @return self
      */
-    public function setDefaultPermission($defaultPermission)
+    public function setDefaultPermission(bool $defaultPermission): self
     {
         $this->defaultPermission = $defaultPermission;
+
         return $this;
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
-    public function getPermissions()
+    public function getFeatures(): array
+    {
+        return array_keys($this->permissions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPermissions(): array
     {
         return $this->permissions;
     }

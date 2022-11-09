@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\Handler;
 
 /**
- * Prezent\FeatureFlagBundle\Handler\ConfigHandler
- *
  * @author Robert-Jan Bijl <robert-jan@prezent.nl>
  */
 class ConfigHandler extends Handler
 {
     /**
-     * @var
+     * @var array<string, bool>
      */
-    private $features;
+    private array $features;
 
     /**
-     * @param array $features
+     * @param array<string, bool> $features
      */
     public function __construct(array $features)
     {
@@ -25,12 +25,10 @@ class ConfigHandler extends Handler
     /**
      * Convert the container configuration to the permissions array
      */
-    public function initialize()
+    public function initialize(): void
     {
         foreach ($this->features as $featureName => $featureValue) {
-            $this->permissions[strtolower($featureName)] = $featureValue;
+            $this->permissions[$featureName] = $featureValue;
         }
-
-        return true;
     }
 }

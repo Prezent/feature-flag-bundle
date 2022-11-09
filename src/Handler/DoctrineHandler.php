@@ -1,52 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\FeatureFlagBundle\Handler;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Prezent\FeatureFlagBundle\Entity\FeatureFlag;
 
 /**
- * Prezent\FeatureFlagBundle\Handler\DoctrineHandler
- *
  * @author Robert-Jan Bijl <robert-jan@prezent.nl>
  */
 class DoctrineHandler extends Handler
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManager $em
-     */
-    public function __construct(EntityManager $em)
+    private string $cacheDir;
+
+    public function __construct(EntityManagerInterface $em, string $cacheDir)
     {
         $this->em = $em;
+        $this->cacheDir = $cacheDir;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function initialize()
+    public function initialize(): void
     {
         /** @var FeatureFlag $featureFlag */
         foreach ($this->em->getRepository(FeatureFlag::class)->getAll() as $featureFlag) {
             $this->permissions[$featureFlag->getFeature()] = $featureFlag->isEnabled();
         }
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isActivated($featureName)
-    {
-        if (!isset($this->permissions[$featureName])) {
-            return $this->getDefaultPermission();
-        }
-
-        return $this->permissions[$featureName];
     }
 }
