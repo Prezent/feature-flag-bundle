@@ -13,7 +13,10 @@ final class FeatureFlag
     public const OPERATOR_AND = 'and';
     public const OPERATOR_OR = 'or';
 
-    private array $features;
+    /**
+     * @var array<string>
+     */
+    private array $features = [];
 
     private string $operator = self::OPERATOR_AND;
 
