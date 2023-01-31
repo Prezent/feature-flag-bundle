@@ -70,10 +70,28 @@ class AnnotationDriver
     {
         // check if one of the annotations is about feature flags
         if ($annotation instanceof Annotations\FeatureFlag) {
-            $featureName = $annotation->getFeature();
+            $features = $annotation->getFeatures();
+            $access = false;
 
-            // check the feature flag, throw a 403 if the feature is not activated
-            if (!$this->featureFlagHandler->isActivated($featureName)) {
+            switch ($annotation->getOperator()) {
+                case Annotations\FeatureFlag::OPERATOR_OR:
+                    $access = false;
+                    foreach ($features as $feature) {
+                        $access = $access || $this->featureFlagHandler->isActivated($feature);
+                    }
+                    break;
+
+                case Annotations\FeatureFlag::OPERATOR_AND:
+                default:
+                    $access = true;
+                    foreach ($features as $feature) {
+                        $access = $access && $this->featureFlagHandler->isActivated($feature);
+                    }
+                    break;
+            }
+
+            // check the result, throw a 403 if the feature is not activated
+            if (!$access) {
                 throw new AccessDeniedHttpException();
             }
         }

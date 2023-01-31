@@ -10,37 +10,46 @@ namespace Prezent\FeatureFlagBundle\Annotations;
  */
 final class FeatureFlag
 {
-    private string $feature;
+    public const OPERATOR_AND = 'and';
+    public const OPERATOR_OR = 'or';
+
+    private array $features;
+
+    private string $operator = self::OPERATOR_AND;
 
     /**
-     * @param string|array<string> $feature
+     * @param string|array<string> $values
      */
-    public function __construct($feature)
+    public function __construct($values)
     {
-        if (is_array($feature)) {
-            $feature = reset($feature);
-        }
+        $values = reset($values);
+        if (is_string($values)) {
+            $this->features = [$values];
+        } else {
+            if (is_string($values[0])) {
+                $this->features = $values;
+            } else {
+                $this->features = $values[0];
 
-        $this->feature = $feature;
+                if (isset($values[1])) {
+                    $this->operator = strtolower($values[1]);
+                }
+            }
+        }
+    }
+
+    public function getOperator(): string
+    {
+        return $this->operator;
     }
 
     /**
      * Getter for feature
      *
-     * @return string
+     * @return array<string>
      */
-    public function getFeature(): string
+    public function getFeatures(): array
     {
-        return $this->feature;
-    }
-
-    /**
-     * Setter for feature
-     */
-    public function setFeature(string $feature): self
-    {
-        $this->feature = $feature;
-
-        return $this;
+        return $this->features;
     }
 }
