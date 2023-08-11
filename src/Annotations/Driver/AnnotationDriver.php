@@ -7,14 +7,9 @@ namespace Prezent\FeatureFlagBundle\Annotations\Driver;
 use Doctrine\Common\Annotations\Reader;
 use Prezent\FeatureFlagBundle\Annotations;
 use Prezent\FeatureFlagBundle\Handler\HandlerInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-/**
- * Prezent\FeatureFlagBundle\Annotations\Driver\AnnotationDriver
- *
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
- */
 class AnnotationDriver
 {
     private Reader $reader;
@@ -36,7 +31,7 @@ class AnnotationDriver
     /**
      * This event will fire during any controller call
      */
-    public function onKernelController(FilterControllerEvent $event): void
+    public function onKernelController(ControllerEvent $event): void
     {
         // return if there is no controller for this event
         if (!is_array($controller = $event->getController())) {
@@ -55,7 +50,7 @@ class AnnotationDriver
         }
 
         // check all method annotations
-        foreach ($this->reader->getMethodAnnotations($method)  as $annotation) {
+        foreach ($this->reader->getMethodAnnotations($method) as $annotation) {
             $this->checkAnnotation($annotation);
         }
     }
@@ -63,39 +58,37 @@ class AnnotationDriver
     /**
      * Check if the annotation is a FF annotation, and check the FF if applicable
      *
-     * @param $annotation
-     * @return bool
+     * @param mixed $annotation
      */
-    private function checkAnnotation($annotation): bool
+    private function checkAnnotation($annotation): void
     {
         // check if one of the annotations is about feature flags
-        if ($annotation instanceof Annotations\FeatureFlag) {
-            $features = $annotation->getFeatures();
-            $access = false;
-
-            switch ($annotation->getOperator()) {
-                case Annotations\FeatureFlag::OPERATOR_OR:
-                    $access = false;
-                    foreach ($features as $feature) {
-                        $access = $access || $this->featureFlagHandler->isActivated($feature);
-                    }
-                    break;
-
-                case Annotations\FeatureFlag::OPERATOR_AND:
-                default:
-                    $access = true;
-                    foreach ($features as $feature) {
-                        $access = $access && $this->featureFlagHandler->isActivated($feature);
-                    }
-                    break;
-            }
-
-            // check the result, throw a 403 if the feature is not activated
-            if (!$access) {
-                throw new AccessDeniedHttpException();
-            }
+        if (!($annotation instanceof Annotations\FeatureFlag)) {
+            return;
         }
 
-        return true;
+        $features = $annotation->getFeatures();
+        $access = false;
+
+        switch ($annotation->getOperator()) {
+            case Annotations\FeatureFlag::OPERATOR_OR:
+                foreach ($features as $feature) {
+                    $access = $access || $this->featureFlagHandler->isActivated($feature);
+                }
+                break;
+
+            case Annotations\FeatureFlag::OPERATOR_AND:
+            default:
+                $access = true;
+                foreach ($features as $feature) {
+                    $access = $access && $this->featureFlagHandler->isActivated($feature);
+                }
+                break;
+        }
+
+        // check the result, throw a 403 if the feature is not activated
+        if (!$access) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

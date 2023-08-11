@@ -8,9 +8,6 @@ use Prezent\FeatureFlagBundle\Handler\HandlerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/**
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
- */
 final class FeatureFlagExtension extends AbstractExtension
 {
     private HandlerInterface $handler;

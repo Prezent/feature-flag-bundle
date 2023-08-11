@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Prezent\FeatureFlagBundle\Handler;
 
-/**
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
- */
+
 class ConfigHandler extends Handler
 {
     /**

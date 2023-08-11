@@ -5,10 +5,6 @@ namespace Prezent\FeatureFlagBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Prezent\FeatureFlagBundle\Entity\FeatureFlag
- *
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
- *
  * @ORM\Entity(repositoryClass="Prezent\FeatureFlagBundle\Repository\FeatureFlagRepository")
  * @ORM\Table(name="feature_flag")
  */

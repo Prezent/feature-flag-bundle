@@ -6,7 +6,6 @@ namespace Prezent\FeatureFlagBundle\Annotations;
 
 /**
  * @Annotation
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
  */
 final class FeatureFlag
 {
