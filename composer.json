@@ -6,7 +6,7 @@
   "homepage": "https://www.prezent.nl",
   "require": {
     "php": "^7.4|^8.0",
-    "doctrine/annotations": "^2.0",
+    "doctrine/annotations": "^1.2|^2.0",
     "symfony/framework-bundle": "^5.4|^6.1",
     "symfony/twig-bundle": "^5.4|^6.1"
   },
