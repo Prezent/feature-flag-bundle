@@ -7,9 +7,6 @@ namespace Prezent\FeatureFlagBundle\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Prezent\FeatureFlagBundle\Entity\FeatureFlag;
 
-/**
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
- */
 class DoctrineHandler extends Handler
 {
     private EntityManagerInterface $em;
@@ -30,15 +27,15 @@ class DoctrineHandler extends Handler
         }
     }
 
-    public function addFeature(string $feature, ?bool $permisson = null): bool
+    public function addFeature(string $feature, ?bool $permission = null): bool
     {
-        $permisson = $permisson ?? $this->getDefaultPermission();
+        $permission = $permission ?? $this->getDefaultPermission();
         if ($this->featureExists($feature)) {
-            throw new \RuntimeException(sprintf('Feature %s already exisis', $feature));
+            throw new \RuntimeException(sprintf('Feature %s already exists', $feature));
         }
-                
+
         try {
-            $featureFlag = new FeatureFlag($feature, $permisson);
+            $featureFlag = new FeatureFlag($feature, $permission);
             $this->em->persist($featureFlag);
             $this->em->flush($featureFlag);
 

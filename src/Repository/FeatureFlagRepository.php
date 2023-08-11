@@ -7,15 +7,11 @@ namespace Prezent\FeatureFlagBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Prezent\FeatureFlagBundle\Entity\FeatureFlag;
 
-/**
- * Prezent\FeatureFlagBundle\Repository\FeatureFlagRepository
- *
- * @author Robert-Jan Bijl <robert-jan@prezent.nl>
- */
+
 class FeatureFlagRepository extends EntityRepository
 {
     /**
-     * Get all feature flags, use resultcache if prompted
+     * Get all feature flags, use resultCache if prompted
      *
      * @return array<FeatureFlag>
      */
