@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Prezent\FeatureFlagBundle\Handler;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Prezent\FeatureFlagBundle\Entity\FeatureFlag;
 
@@ -21,9 +22,13 @@ class DoctrineHandler extends Handler
 
     public function initialize(): void
     {
-        /** @var FeatureFlag $featureFlag */
-        foreach ($this->em->getRepository(FeatureFlag::class)->getAll() as $featureFlag) {
-            $this->permissions[$featureFlag->getFeature()] = $featureFlag->isEnabled();
+        try {
+            /** @var FeatureFlag $featureFlag */
+            foreach ($this->em->getRepository(FeatureFlag::class)->getAll() as $featureFlag) {
+                $this->permissions[$featureFlag->getFeature()] = $featureFlag->isEnabled();
+            }
+        } catch (Exception $e) {
+            return;
         }
     }
 
