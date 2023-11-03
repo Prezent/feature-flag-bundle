@@ -49,4 +49,25 @@ class DoctrineHandler extends Handler
             return false;
         }
     }
+
+    /**
+     * Update the value of a feature in the database
+     */
+    public function updateFeature(string $feature, bool $permission): bool
+    {
+        $permission = $permission ?? $this->getDefaultPermission();
+        if (!$this->featureExists($feature)) {
+            throw new \RuntimeException(sprintf('Feature %s does not exists', $feature));
+        }
+
+        try {
+            $featureFlag = $this->em->getRepository(FeatureFlag::class)->findOneByFeature($feature);
+            $featureFlag->setEnabled($permission);
+            $this->em->flush($featureFlag);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }
