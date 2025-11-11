@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Prezent\FeatureFlagBundle\Twig;
 
 use Prezent\FeatureFlagBundle\Handler\HandlerInterface;
-use Twig\Attribute\AsTwigFunction;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 final class FeatureFlagExtension extends AbstractExtension
 {
@@ -16,9 +16,19 @@ final class FeatureFlagExtension extends AbstractExtension
     }
 
     /**
+     * {@inheritDoc}
+     * @return array<TwigFunction>
+     */
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('has_feature', [$this, 'checkFeature']),
+        ];
+    }
+
+    /**
      * Check if the feature is activated
      */
-    #[AsTwigFunction('has_feature')]
     public function checkFeature(string $featureName): bool
     {
         return $this->handler->isActivated($featureName);
