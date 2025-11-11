@@ -7,7 +7,6 @@ namespace Prezent\FeatureFlagBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Prezent\FeatureFlagBundle\Entity\FeatureFlag;
 
-
 class FeatureFlagRepository extends EntityRepository
 {
     /**

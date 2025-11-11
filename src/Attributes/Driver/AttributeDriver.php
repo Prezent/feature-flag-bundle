@@ -2,20 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Prezent\FeatureFlagBundle\Annotations\Driver;
+namespace Prezent\FeatureFlagBundle\Attributes\Driver;
 
-use Doctrine\Common\Annotations\Reader;
-use Prezent\FeatureFlagBundle\Annotations;
+use Prezent\FeatureFlagBundle\Attributes\FeatureFlag as FeatureFlagAttribute;
 use Prezent\FeatureFlagBundle\Driver\FeatureFlagAccessTrait;
 use Prezent\FeatureFlagBundle\Handler\HandlerInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
-class AnnotationDriver
+class AttributeDriver
 {
     use FeatureFlagAccessTrait;
 
     public function __construct(
-        private Reader $reader,
         private HandlerInterface $featureFlagHandler
     ) {
     }
@@ -36,29 +34,24 @@ class AnnotationDriver
         // get the specific method that has been called
         $method = $object->getMethod($controller[1]);
 
-        // 1) check all class annotations (Doctrine)
-        foreach ($this->reader->getClassAnnotations($object) as $annotation) {
-            $this->checkAnnotation($annotation);
+        // 1) check all class attributes
+        foreach ($object->getAttributes(FeatureFlagAttribute::class) as $attribute) {
+            $this->checkAttribute($attribute->newInstance());
         }
 
-        // 2) check all method annotations (Doctrine)
-        foreach ($this->reader->getMethodAnnotations($method) as $annotation) {
-            $this->checkAnnotation($annotation);
+        // 2) check all method attributes
+        foreach ($method->getAttributes(FeatureFlagAttribute::class) as $attribute) {
+            $this->checkAttribute($attribute->newInstance());
         }
     }
 
-    /**
-     * Check if the annotation is a FF declaration, and check the FF if applicable
-     *
-     * @param mixed $annotation
-     */
-    private function checkAnnotation($annotation): void
+    private function checkAttribute(object $attributeInstance): void
     {
-        if (!($annotation instanceof Annotations\FeatureFlag)) {
+        if (!($attributeInstance instanceof FeatureFlagAttribute)) {
             return;
         }
 
-        $access = $this->evaluateAccess($annotation->getFeatures(), $annotation->getOperator());
+        $access = $this->evaluateAccess($attributeInstance->getFeatures(), $attributeInstance->getOperator());
         $this->enforceAccess($access);
     }
 }

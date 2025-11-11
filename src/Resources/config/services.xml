@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="prezent_feature_flag.default_permission">false</parameter>
-        <parameter key="prezent_feature_flag.features" type="collection"></parameter>
+        <parameter key="prezent_feature_flag.features" type="collection" />
     </parameters>
 
     <services>
@@ -40,6 +40,10 @@
         </service>
 
         <service id="Prezent\FeatureFlagBundle\Annotations\Driver\AnnotationDriver">
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
+        </service>
+
+        <service id="Prezent\FeatureFlagBundle\Attributes\Driver\AttributeDriver">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
         </service>
 
