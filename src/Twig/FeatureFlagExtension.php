@@ -6,8 +6,9 @@ namespace Prezent\FeatureFlagBundle\Twig;
 
 use Prezent\FeatureFlagBundle\Handler\HandlerInterface;
 use Twig\Attribute\AsTwigFunction;
+use Twig\Extension\AbstractExtension;
 
-final class FeatureFlagExtension
+final class FeatureFlagExtension extends AbstractExtension
 {
     public function __construct(
         private HandlerInterface $handler
