@@ -6,7 +6,7 @@ This bundle can be installed using Composer. Tell composer to install the extens
 $ php composer.phar require prezent/feature-flag-bundle
 ```
 
-Then, activate the bundle (Symfony 4+):
+Then, activate the bundle:
 
 ```php
 <?php
@@ -18,19 +18,10 @@ return [
 ];
 ```
 
-or (Symfony 3):
-
-```php
-<?php
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    $bundles = [
-        // ...
-        new Prezent\FeatureFlagBundle\PrezentFeatureFlagBundle(),
-    ];
-}
+## Annotations
+If you want to use the feature flags in combination with annotations, you need to install `Doctrine Annotations`:
+```bash
+$ php composer.phar require doctine/annotations
 ```
 
 # Configuration
@@ -53,4 +44,4 @@ parameters:
 ```
 
 ## Via Doctrine
-Define your feature flags in the database, using the provider entity and migration
+Define your feature flags in the database, using the provided entity and migration
