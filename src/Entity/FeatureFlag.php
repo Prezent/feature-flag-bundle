@@ -11,29 +11,26 @@ use Doctrine\ORM\Mapping as ORM;
 class FeatureFlag
 {
     /**
-     * @var integer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string
      * @ORM\Column(name="feature", type="string", unique=true)
      */
-    private $feature;
+    private string $feature;
 
     /**
-     * @var boolean
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(string $feature, ?bool $enabled = null)
     {
         $this->feature = $feature;
-        if (!is_null($enabled)) {
+        if (null !== $enabled) {
             $this->enabled = $enabled;
         }
     }
@@ -61,7 +58,7 @@ class FeatureFlag
     /**
      * Getter for enabled
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {
@@ -71,12 +68,13 @@ class FeatureFlag
     /**
      * Setter for enabled
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      * @return self
      */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+
         return $this;
     }
 }

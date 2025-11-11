@@ -14,20 +14,10 @@ class AnnotationDriver
 {
     use FeatureFlagAccessTrait;
 
-    private Reader $reader;
-
-    private HandlerInterface $featureFlagHandler;
-
-    /**
-     * Constructor
-     *
-     * @param Reader $reader
-     * @param HandlerInterface $featureFlagHandler
-     */
-    public function __construct(Reader $reader, HandlerInterface $featureFlagHandler)
-    {
-        $this->reader = $reader;
-        $this->featureFlagHandler = $featureFlagHandler;
+    public function __construct(
+        private Reader $reader,
+        private HandlerInterface $featureFlagHandler
+    ) {
     }
 
     /**

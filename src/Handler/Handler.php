@@ -18,9 +18,6 @@ abstract class Handler implements HandlerInterface
      */
     protected array $permissions = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function isActivated(string $feature): bool
     {
         $feature = strtolower($feature);
@@ -33,9 +30,6 @@ abstract class Handler implements HandlerInterface
         return $this->getDefaultPermission();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function featureExists(string $feature): bool
     {
         $feature = strtolower($feature);
@@ -66,17 +60,11 @@ abstract class Handler implements HandlerInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getFeatures(): array
     {
         return array_keys($this->permissions);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getPermissions(): array
     {
         return $this->permissions;

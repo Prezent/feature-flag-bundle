@@ -6,7 +6,7 @@ namespace Prezent\FeatureFlagBundle\Attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class FeatureFlag
 {
     public const OPERATOR_AND = 'and';
@@ -28,6 +28,7 @@ final class FeatureFlag
      * Examples:
      *  #[FeatureFlag('my_feature')]
      *  #[FeatureFlag(['a', 'b'], 'or')]
+     * @param string|array<string> $features
      */
     public function __construct(string|array $features, ?string $operator = null)
     {

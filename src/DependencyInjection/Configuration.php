@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Prezent\FeatureFlagBundle\DependencyInjection;
 
+use Prezent\FeatureFlagBundle\Handler\ConfigHandler;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('prezent_feature_flag');
@@ -20,12 +18,12 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('default_permission')
-                    ->defaultFalse()
-                ->end()
-                ->scalarNode('handler')
-                    ->defaultValue('Prezent\FeatureFlagBundle\Handler\ConfigHandler')
-                ->end()
+            ->scalarNode('default_permission')
+            ->defaultFalse()
+            ->end()
+            ->scalarNode('handler')
+            ->defaultValue(ConfigHandler::class)
+            ->end()
             ->end()
             ->append($this->createFeaturesNode())
         ;
@@ -48,25 +46,39 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->prototype('array')
-                ->treatTrueLike(['enabled' => true])
-                ->treatFalseLike(['enabled' => false])
-                ->treatNullLike(['enabled' => null])
-                ->beforeNormalization()
-                    ->ifTrue(function ($value) { return is_double($value); })
-                    ->then(function ($value) { return ['enabled' => true, 'ratio' => $value]; })
-                ->end()
-                ->beforeNormalization()
-                    ->ifTrue(function ($value) { return is_bool($value); })
-                    ->then(function ($value) { return ['enabled' => $value]; })
-                ->end()
-                ->beforeNormalization()
-                    ->ifTrue(function ($value) { return is_string($value) && preg_match('/[0-9]*%/', $value); })
-                    ->then(function ($value) { return ['enabled' => true, 'ratio' => $value / 100]; })
-                ->end()
-                ->children()
-                    ->booleanNode('enabled')->end()
-                    ->floatNode('ratio')->end()
-                ->end()
+            ->treatTrueLike([
+                'enabled' => true,
+            ])
+            ->treatFalseLike([
+                'enabled' => false,
+            ])
+            ->treatNullLike([
+                'enabled' => null,
+            ])
+            ->beforeNormalization()
+            ->ifTrue(fn ($value) => is_double($value))
+            ->then(fn ($value) => [
+                'enabled' => true,
+                'ratio' => $value,
+            ])
+            ->end()
+            ->beforeNormalization()
+            ->ifTrue(fn ($value) => is_bool($value))
+            ->then(fn ($value) => [
+                'enabled' => $value,
+            ])
+            ->end()
+            ->beforeNormalization()
+            ->ifTrue(fn ($value) => is_string($value) && preg_match('/[0-9]*%/', $value))
+            ->then(fn ($value) => [
+                'enabled' => true,
+                'ratio' => $value / 100,
+            ])
+            ->end()
+            ->children()
+            ->booleanNode('enabled')->end()
+            ->floatNode('ratio')->end()
+            ->end()
             ->end()
         ;
 

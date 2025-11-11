@@ -29,5 +29,4 @@ interface HandlerInterface
      * @return array<string, bool>
      */
     public function getPermissions(): array;
-
 }

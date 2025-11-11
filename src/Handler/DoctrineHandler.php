@@ -12,12 +12,11 @@ class DoctrineHandler extends Handler
 {
     private EntityManagerInterface $em;
 
-    private string $cacheDir;
-
-    public function __construct(EntityManagerInterface $em, string $cacheDir)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        private string $cacheDir
+    ) {
         $this->em = $em;
-        $this->cacheDir = $cacheDir;
     }
 
     public function initialize(): void
@@ -27,14 +26,14 @@ class DoctrineHandler extends Handler
             foreach ($this->em->getRepository(FeatureFlag::class)->getAll() as $featureFlag) {
                 $this->permissions[$featureFlag->getFeature()] = $featureFlag->isEnabled();
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             return;
         }
     }
 
     public function addFeature(string $feature, ?bool $permission = null): bool
     {
-        $permission = $permission ?? $this->getDefaultPermission();
+        $permission ??= $this->getDefaultPermission();
         if ($this->featureExists($feature)) {
             throw new \RuntimeException(sprintf('Feature %s already exists', $feature));
         }
@@ -45,7 +44,7 @@ class DoctrineHandler extends Handler
             $this->em->flush($featureFlag);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
     }
@@ -55,7 +54,7 @@ class DoctrineHandler extends Handler
      */
     public function updateFeature(string $feature, bool $permission): bool
     {
-        $permission = $permission ?? $this->getDefaultPermission();
+        $permission ??= $this->getDefaultPermission();
         if (!$this->featureExists($feature)) {
             throw new \RuntimeException(sprintf('Feature %s does not exists', $feature));
         }
@@ -66,7 +65,7 @@ class DoctrineHandler extends Handler
             $this->em->flush($featureFlag);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
     }

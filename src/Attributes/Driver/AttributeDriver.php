@@ -13,11 +13,9 @@ class AttributeDriver
 {
     use FeatureFlagAccessTrait;
 
-    private HandlerInterface $featureFlagHandler;
-
-    public function __construct(HandlerInterface $featureFlagHandler)
-    {
-        $this->featureFlagHandler = $featureFlagHandler;
+    public function __construct(
+        private HandlerInterface $featureFlagHandler
+    ) {
     }
 
     /**
