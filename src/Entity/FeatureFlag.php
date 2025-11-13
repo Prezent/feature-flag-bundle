@@ -3,11 +3,14 @@
 namespace Prezent\FeatureFlagBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Prezent\FeatureFlagBundle\Repository\FeatureFlagRepository;
 
 /**
  * @ORM\Entity(repositoryClass="Prezent\FeatureFlagBundle\Repository\FeatureFlagRepository")
  * @ORM\Table(name="feature_flag")
  */
+#[ORM\Entity(repositoryClass: FeatureFlagRepository::class)]
+#[ORM\Table(name: "feature_flag")]
 class FeatureFlag
 {
     /**
@@ -15,16 +18,21 @@ class FeatureFlag
      * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "id", type: "integer")]
     private int $id;
 
     /**
      * @ORM\Column(name="feature", type="string", unique=true)
      */
+    #[ORM\Column(name: "feature", type: "string", unique: true)]
     private string $feature;
 
     /**
      * @ORM\Column(name="enabled", type="boolean")
      */
+    #[ORM\Column(name: "enabled", type: "boolean")]
     private bool $enabled;
 
     public function __construct(string $feature, ?bool $enabled = null)
