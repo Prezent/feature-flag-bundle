@@ -18,18 +18,12 @@ return [
 ];
 ```
 
-## Annotations
-If you want to use the feature flags in combination with annotations, you need to install `Doctrine Annotations`:
-```bash
-$ php composer.phar require doctine/annotations
-```
-
 # Configuration
 
 ## Full example
 ```yml
 prezent_feature_flag:
-    default_permission: false #default value for an undefinded permission
+    default_permission: false #default value for an undefined permission
     handler: Prezent\FeatureFlagBundle\Handler\ConfigHandler # the handler to use
 ```
 

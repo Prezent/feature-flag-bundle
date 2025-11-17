@@ -5,12 +5,11 @@
   "keywords": ["featureflag", "feature"],
   "homepage": "https://www.prezent.nl",
   "require": {
-    "php": "^8.0",
-    "symfony/framework-bundle": "^5.4|^6.4|^7.3",
-    "symfony/twig-bundle": "^5.4|^6.4|^7.3"
+    "php": "^8.2",
+    "symfony/framework-bundle": "^6.4|^7.3",
+    "symfony/twig-bundle": "^6.4|^7.3"
   },
   "suggest": {
-    "doctrine/annotations": "If you want to use annotations for you feature flags",
     "doctrine/doctrine-migrations-bundle": "To automatically create a feature flag table using a migrations file",
     "doctrine/orm": "To use a database to stores the feature flags and permissions in"
   },
@@ -30,7 +29,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "3.x-dev"
+      "dev-master": "4.x-dev"
     }
   }
 }
